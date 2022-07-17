@@ -8,7 +8,7 @@ const commentsSlice = createSlice({
   reducers: {
     // payload all comments on array
     allComments(state,action){
-state.comments=[...action]
+state.comments=[...action.payload]
     }
   },
 });

@@ -31,7 +31,7 @@ const NavBar = () => {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-start flex-grow-1 pe-3">
-                  <Nav.Link href="#action1">Posts</Nav.Link>
+                  <Nav.Link href="/posts">Posts</Nav.Link>
                   <Nav.Link href="#action2">Users</Nav.Link>
                 </Nav>
                 <Navbar.Collapse className="justify-content-end">

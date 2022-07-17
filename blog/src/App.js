@@ -6,6 +6,8 @@ import {allPosts} from "./components/redux/reducer/posts/index"
 import {allUsers} from "./components/redux/reducer/users/index"
 import axios from "axios"
 import NavBar from './components/NavBar';
+import PostsPage from './components/PostsPage';
+import {Routes,Route} from "react-router-dom"
 
 function App() {
 const dispatch =useDispatch()
@@ -21,7 +23,7 @@ axios.get("https://jsonplaceholder.typicode.com/posts").then((result)=>{
 }).catch((err)=>{
   console.log(err);
 })
-axios.get("https://jsonplaceholder.typicode.com/comments").then((result)=>{
+axios.get("https://jsonplaceholder.typicode.com/users").then((result)=>{
   dispatch(allUsers(result.data))
 
 }).catch((err)=>{
@@ -34,7 +36,12 @@ axios.get("https://jsonplaceholder.typicode.com/comments").then((result)=>{
   return (
     <div className="App">
       <NavBar/>
+      <Routes>
+
+      <Route path="/posts" element={<PostsPage/>}/>
       
+      
+      </Routes>
     </div>
   );
 }
