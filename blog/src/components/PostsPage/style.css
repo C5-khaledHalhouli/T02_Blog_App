@@ -4,3 +4,7 @@
 .cardsPost{
     margin: 5%;
 }
+.card-header{
+    justify-content: space-between;
+    display: flex;
+}

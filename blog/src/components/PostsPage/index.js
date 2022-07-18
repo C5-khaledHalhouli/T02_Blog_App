@@ -8,12 +8,15 @@ import { useSelector, useDispatch } from "react-redux/es/exports";
 import "./style.css";
 import axios from "axios";
 import { commentsOfPost } from "../redux/reducer/comments";
-import { addPostsAction } from "../redux/reducer/posts";
+import { addPostsAction,deletePostsAction,editeAction } from "../redux/reducer/posts";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const PostsPage = () => {
   const [postTitle, setPostTitle] = useState("");
   const [postBody, setPostBody] = useState("");
   const [show, setShow] = useState(false);
+  const [editeShow, setEditeShow] = useState(false)
+  const [postId, setPostId] = useState("")
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const dispatch = useDispatch();
@@ -22,6 +25,7 @@ const PostsPage = () => {
       posts: state.posts.posts,
       users: state.users.users,
       commentsOfPost: state.comments.commentsOfPost,
+      loginUser: state.users.loginUser,
     };
   });
 
@@ -42,10 +46,32 @@ const PostsPage = () => {
       dispatch(commentsOfPost([]));
     }
   };
-  const addPostClick=()=>{
-    // ! change userId
-dispatch(addPostsAction({userId:1,id:state.posts.length+1,title:postTitle,body:postBody}))
-    setShow(false)
+  const addPostClick = () => {
+    dispatch(
+      addPostsAction({
+        userId: state.loginUser[0].id,
+        id: state.posts.length + 1,
+        title: postTitle,
+        body: postBody,
+      })
+    );
+    setShow(false);
+    setPostBody("")
+    setPostTitle("")
+  };
+  const deleteClick=(id)=>{
+dispatch(deletePostsAction(id))
+  }
+  const editeClick=()=>{
+    let editePost={}
+if(postBody){
+editePost.body=postBody
+}
+if(postTitle){
+editePost.title=postTitle
+}
+dispatch(editeAction([postId,editePost]))
+setShow(false)
   }
 
   return (
@@ -57,7 +83,7 @@ dispatch(addPostsAction({userId:1,id:state.posts.length+1,title:postTitle,body:p
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Add post</Modal.Title>
+            {editeShow?<Modal.Title>Edite post</Modal.Title>:<Modal.Title>Add post</Modal.Title>}
           </Modal.Header>
           <Modal.Body>
             <Form
@@ -104,9 +130,12 @@ dispatch(addPostsAction({userId:1,id:state.posts.length+1,title:postTitle,body:p
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={addPostClick}>
+            {editeShow? <Button variant="primary" onClick={editeClick}>
+              Edite post
+            </Button>: <Button variant="primary" onClick={addPostClick}>
               Add post
-            </Button>
+            </Button>}
+           
           </Modal.Footer>
         </Modal>
       </>
@@ -119,7 +148,32 @@ dispatch(addPostsAction({userId:1,id:state.posts.length+1,title:postTitle,body:p
           // console.log("user",user);
           return (
             <Card key={index + "post"} className="cardsPost">
-              <Card.Header as="h5">{user.name}</Card.Header>
+              <Card.Header as="h5">
+                <h5>{user.name}</h5>{" "}
+                {state.loginUser.length!==0&&state.loginUser[0].name === user.name ? (
+                  <Dropdown className="dropdownList">
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      Dropdown Button
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={()=>{
+                        setEditeShow(true)
+                        setPostId(element.id)
+                        handleShow()
+                      }}>Edite</Dropdown.Item>
+                      <Dropdown.Item onClick={()=>{
+                        deleteClick(element.id)
+                      }}>
+                        Delete
+                      </Dropdown.Item>
+                      
+                    </Dropdown.Menu>
+                  </Dropdown>
+                ) : (
+                  <></>
+                )}
+              </Card.Header>
               <Card.Body>
                 <Card.Title>{element.title}</Card.Title>
                 <Card.Text>{element.body}</Card.Text>

@@ -9,6 +9,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { login } from "../redux/reducer/users";
+import {Link} from "react-router-dom"
 const NavBar = () => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -85,11 +86,11 @@ const NavBar = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-start flex-grow-1 pe-3">
-                <Nav.Link href="/posts">Posts</Nav.Link>
-                <Nav.Link href="#action2">Users</Nav.Link>
+              <Nav.Link ><Link to={"/"}>Posts</Link></Nav.Link>
+                <Nav.Link ><Link to={"/users"}>Users</Link></Nav.Link>
               </Nav>
               <Navbar.Collapse className="justify-content-end">
-                {state.loginUser ? (
+                {state.loginUser.length!==0 ? (
                   <Navbar.Text>
                     Signed in as: <a href="#login">{state.loginUser[0].name}</a>
                   </Navbar.Text>
@@ -101,12 +102,7 @@ const NavBar = () => {
           </Navbar.Offcanvas>
         </Container>
       </Navbar>
-      <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+      
     </>
   );
 };
