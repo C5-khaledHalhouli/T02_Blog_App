@@ -14,11 +14,13 @@ state.users=[...action.payload]
     // payload {username,email}
 
     login(state,action){
+        console.log(action.payload);
 state.loginUser=state.users.filter((element)=>{
     return element.username===action.payload.username && element.email===action.payload.email
 })
+console.log(state.loginUser);
     }
   },
 });
-export const {allUsers}=usersSlice.actions
+export const {allUsers,login}=usersSlice.actions
 export default usersSlice.reducer
