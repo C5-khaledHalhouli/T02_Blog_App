@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux/es/exports";
+import { useSelector,useDispatch } from "react-redux/es/exports";
 import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
@@ -6,8 +6,11 @@ import "./style.css";
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import { editeUserAction } from "../redux/reducer/users";
+
 
 const UserPage = () => {
+    const dispatch=useDispatch()
   const [show, setShow] = useState(false);
 const [email, setEmail] = useState("")
 const [name, setName] = useState("")
@@ -20,6 +23,7 @@ const [username, setUsername] = useState("")
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const saveChangesButton=()=>{
+ 
     const infoObj={}
     if (name) {
         infoObj.name=name
@@ -30,6 +34,8 @@ const [username, setUsername] = useState("")
     if(email){
         infoObj.email=email
     }
+    dispatch(editeUserAction([state.loginUser[0].id,infoObj]))
+    handleClose()
   }
 
   return (
@@ -82,7 +88,9 @@ const [username, setUsername] = useState("")
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={()=>{
+            
+            saveChangesButton()}}>
             Save Changes
           </Button>
         </Modal.Footer>
