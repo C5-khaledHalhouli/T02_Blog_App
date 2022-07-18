@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux"
 import Table from 'react-bootstrap/Table';
 import "./style.css"
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 const UsersPage=()=>{
 

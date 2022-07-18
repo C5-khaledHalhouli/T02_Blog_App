@@ -9,6 +9,7 @@ import NavBar from './components/NavBar';
 import PostsPage from './components/PostsPage';
 import {Routes,Route} from "react-router-dom"
 import UsersPage from './components/UsersPage';
+import UserPage from './components/UserPage';
 
 function App() {
 const dispatch =useDispatch()
@@ -42,6 +43,7 @@ axios.get("https://jsonplaceholder.typicode.com/users").then((result)=>{
       <Route path="/" element={<PostsPage/>}/>
       
       <Route path="/users" element={<UsersPage/>}/>
+      <Route path="/userinfo" element={<UserPage/>}/>
       </Routes>
     </div>
   );

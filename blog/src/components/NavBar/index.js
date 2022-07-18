@@ -92,7 +92,7 @@ const NavBar = () => {
               <Navbar.Collapse className="justify-content-end">
                 {state.loginUser.length!==0 ? (
                   <Navbar.Text>
-                    Signed in as: <a href="#login">{state.loginUser[0].name}</a>
+                    Signed in as: <Link to="/userinfo">{state.loginUser[0].name}</Link>
                   </Navbar.Text>
                 ) : (
                   <Navbar.Text onClick={handleShow}>SignIn</Navbar.Text>
