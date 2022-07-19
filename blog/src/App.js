@@ -2,7 +2,7 @@ import React,{useEffect} from 'react';
 import './App.css';
 import {useDispatch} from "react-redux"
 import {allComments} from "./components/redux/reducer/comments/index"
-import {allPosts} from "./components/redux/reducer/posts/index"
+import {allPosts,showPostsAction} from "./components/redux/reducer/posts/index"
 import {allUsers} from "./components/redux/reducer/users/index"
 import axios from "axios"
 import NavBar from './components/NavBar';
@@ -21,6 +21,7 @@ const dispatch =useDispatch()
 })
 axios.get("https://jsonplaceholder.typicode.com/posts").then((result)=>{
   dispatch(allPosts(result.data))
+  dispatch(showPostsAction(1))
 
 }).catch((err)=>{
   console.log(err);

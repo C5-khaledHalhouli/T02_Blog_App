@@ -11,9 +11,10 @@ import { commentsOfPost } from "../redux/reducer/comments";
 import {
   addPostsAction,
   deletePostsAction,
-  editeAction,
+  editeAction,showPostsAction
 } from "../redux/reducer/posts";
 import Dropdown from "react-bootstrap/Dropdown";
+let numPage=1
 
 const PostsPage = () => {
   const [postTitle, setPostTitle] = useState("");
@@ -37,6 +38,7 @@ const PostsPage = () => {
       users: state.users.users,
       commentsOfPost: state.comments.commentsOfPost,
       loginUser: state.users.loginUser,
+      showPost:state.posts.showPost
     };
   });
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -97,6 +99,10 @@ const PostsPage = () => {
     dispatch(editeAction([postId, editePost]));
     setShow(false);
   };
+  const seeMoreClick=()=>{
+    numPage =numPage+1
+    dispatch(showPostsAction(numPage))
+  }
 
   return (
     <div className="postsPage">
@@ -170,9 +176,9 @@ const PostsPage = () => {
           </Modal.Footer>
         </Modal>
       </>
-      {state.posts &&
+      {state.showPost &&
         state.users.length !== 0 &&
-        state.posts.map((element, index) => {
+        state.showPost.map((element, index) => {
           let user = state.users.find((elementUsers) => {
             return elementUsers.id === element.userId;
           });
@@ -277,6 +283,7 @@ const PostsPage = () => {
             </Card>
           );
         })}
+        <Button variant="secondary" onClick={seeMoreClick}>See more</Button>
     </div>
   );
 };
