@@ -8,17 +8,28 @@ import { useSelector, useDispatch } from "react-redux/es/exports";
 import "./style.css";
 import axios from "axios";
 import { commentsOfPost } from "../redux/reducer/comments";
-import { addPostsAction,deletePostsAction,editeAction } from "../redux/reducer/posts";
+import {
+  addPostsAction,
+  deletePostsAction,
+  editeAction,
+} from "../redux/reducer/posts";
 import Dropdown from "react-bootstrap/Dropdown";
 
 const PostsPage = () => {
   const [postTitle, setPostTitle] = useState("");
   const [postBody, setPostBody] = useState("");
   const [show, setShow] = useState(false);
-  const [editeShow, setEditeShow] = useState(false)
-  const [postId, setPostId] = useState("")
-  const handleClose = () => setShow(false);
+  const [deleteShow, setDeleteShow] = useState(false);
+
+  const [editeShow, setEditeShow] = useState(false);
+  const [postId, setPostId] = useState("");
+  const handleClose = () => {
+    setDeleteShow(false);
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
+  const handleShowDelete = () => setDeleteShow(true);
+
   const dispatch = useDispatch();
   const state = useSelector((state) => {
     return {
@@ -28,6 +39,19 @@ const PostsPage = () => {
       loginUser: state.users.loginUser,
     };
   });
+  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+    <a
+      href=""
+      ref={ref}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+      }}
+    >
+      {children}
+      &#x25bc;
+    </a>
+  ));
 
   const commentClick = (postId) => {
     if (
@@ -56,23 +80,23 @@ const PostsPage = () => {
       })
     );
     setShow(false);
-    setPostBody("")
-    setPostTitle("")
+    setPostBody("");
+    setPostTitle("");
   };
-  const deleteClick=(id)=>{
-dispatch(deletePostsAction(id))
-  }
-  const editeClick=()=>{
-    let editePost={}
-if(postBody){
-editePost.body=postBody
-}
-if(postTitle){
-editePost.title=postTitle
-}
-dispatch(editeAction([postId,editePost]))
-setShow(false)
-  }
+  const deleteClick = (id) => {
+    dispatch(deletePostsAction(id));
+  };
+  const editeClick = () => {
+    let editePost = {};
+    if (postBody) {
+      editePost.body = postBody;
+    }
+    if (postTitle) {
+      editePost.title = postTitle;
+    }
+    dispatch(editeAction([postId, editePost]));
+    setShow(false);
+  };
 
   return (
     <div className="postsPage">
@@ -83,7 +107,11 @@ setShow(false)
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            {editeShow?<Modal.Title>Edite post</Modal.Title>:<Modal.Title>Add post</Modal.Title>}
+            {editeShow ? (
+              <Modal.Title>Edite post</Modal.Title>
+            ) : (
+              <Modal.Title>Add post</Modal.Title>
+            )}
           </Modal.Header>
           <Modal.Body>
             <Form
@@ -130,12 +158,15 @@ setShow(false)
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            {editeShow? <Button variant="primary" onClick={editeClick}>
-              Edite post
-            </Button>: <Button variant="primary" onClick={addPostClick}>
-              Add post
-            </Button>}
-           
+            {editeShow ? (
+              <Button variant="primary" onClick={editeClick}>
+                Edite post
+              </Button>
+            ) : (
+              <Button variant="primary" onClick={addPostClick}>
+                Add post
+              </Button>
+            )}
           </Modal.Footer>
         </Modal>
       </>
@@ -150,26 +181,59 @@ setShow(false)
             <Card key={index + "post"} className="cardsPost">
               <Card.Header as="h5">
                 <h5>{user.name}</h5>{" "}
-                {state.loginUser.length!==0&&state.loginUser[0].name === user.name ? (
-                  <Dropdown className="dropdownList">
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                      Dropdown Button
-                    </Dropdown.Toggle>
+                {state.loginUser.length !== 0 &&
+                state.loginUser[0].name === user.name ? (
+                  <>
+                    <Modal show={deleteShow} onHide={handleClose}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Delete Post</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        Are you sure you want to delete this post?
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                          Close
+                        </Button>
+                        <Button
+                          variant="primary"
+                          onClick={() => {
+                            deleteClick(element.id);
+                            handleClose();
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
 
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={()=>{
-                        setEditeShow(true)
-                        setPostId(element.id)
-                        handleShow()
-                      }}>Edite</Dropdown.Item>
-                      <Dropdown.Item onClick={()=>{
-                        deleteClick(element.id)
-                      }}>
-                        Delete
-                      </Dropdown.Item>
-                      
-                    </Dropdown.Menu>
-                  </Dropdown>
+                    <Dropdown className="dropdownList">
+                      <Dropdown.Toggle
+                        as={CustomToggle}
+                        id="dropdown-custom-components"
+                      >
+                        
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item
+                          onClick={() => {
+                            setEditeShow(true);
+                            setPostId(element.id);
+                            handleShow();
+                          }}
+                        >
+                          Edite
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          onClick={() => {
+                            handleShowDelete();
+                          }}
+                        >
+                          Delete
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </>
                 ) : (
                   <></>
                 )}

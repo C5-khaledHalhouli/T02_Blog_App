@@ -9,7 +9,9 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { login } from "../redux/reducer/users";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import "./style.css"
 const NavBar = () => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -26,6 +28,10 @@ const NavBar = () => {
     dispatch(login({ username: username, email: email }));
     setShow(false);
   };
+  const signoutClick=()=>{
+    dispatch(login([]))
+    localStorage.removeItem("login")
+  }
 
   return (
     <>
@@ -72,7 +78,7 @@ const NavBar = () => {
       </Modal>
       <Navbar key={"sm"} bg="light" expand={"sm"} className="mb-3">
         <Container fluid>
-          <Navbar.Brand href="#">Task Blog</Navbar.Brand>
+          <Nav.Link className="navTitle">Task Blog</Nav.Link>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"sm"}`} />
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-${"sm"}`}
@@ -86,25 +92,42 @@ const NavBar = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-start flex-grow-1 pe-3">
-              <Nav.Link ><Link to={"/"}>Posts</Link></Nav.Link>
-                <Nav.Link ><Link to={"/users"}>Users</Link></Nav.Link>
+                <Nav.Link>
+                  <Link to={"/"}className="navLink">Posts</Link>
+                </Nav.Link>
+                <Nav.Link>
+                  <Link to={"/users"} className="navLink">Users</Link>
+                </Nav.Link>
+                
               </Nav>
               <Navbar.Collapse className="justify-content-end">
-                {state.loginUser.length!==0 ? (
+                {state.loginUser.length !== 0 ? (
                   <Navbar.Text>
-                    Signed in as: <Link to="/userinfo">{state.loginUser[0].name}</Link>
-                    <p>SignOut</p>
+                    <Nav>
+                      <NavDropdown
+                        id="nav-dropdown-dark-example"
+                        title={`${state.loginUser[0].name}`}
+                        menuVariant="dark"
+                      >
+                        <NavDropdown.Item href="/userinfo">
+                          Profile
+                        </NavDropdown.Item>
+
+                        <NavDropdown.Divider />
+                        <NavDropdown.Item onClick={signoutClick}>
+                          SignOut
+                        </NavDropdown.Item>
+                      </NavDropdown>
+                    </Nav>
                   </Navbar.Text>
-                
                 ) : (
-                  <Navbar.Text onClick={handleShow}>SignIn</Navbar.Text>
+                  <Navbar.Text onClick={handleShow} className="link">SignIn</Navbar.Text>
                 )}
               </Navbar.Collapse>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
         </Container>
       </Navbar>
-      
     </>
   );
 };

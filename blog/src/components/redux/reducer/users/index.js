@@ -15,15 +15,6 @@ const usersSlice = createSlice({
 
     login(state, action) {
       state.loginUser = state.users.filter((element) => {
-        console.log(
-          element.username === action.payload.username,
-          element.email === action.payload.email,
-          action.payload.username,
-          element.username,
-          action.payload.email,
-          element.email
-        );
-
         return (
           element.username === action.payload.username &&
           element.email === action.payload.email

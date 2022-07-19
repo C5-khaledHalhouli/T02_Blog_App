@@ -33,7 +33,6 @@ axios.get("https://jsonplaceholder.typicode.com/users").then((result)=>{
 })
 if(localStorage.getItem("login")){
   let userLogin=JSON.parse((localStorage.getItem("login")))
-  console.log(userLogin);
   dispatch(login(userLogin))
 }
 
