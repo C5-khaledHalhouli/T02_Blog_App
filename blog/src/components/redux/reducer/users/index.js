@@ -14,9 +14,15 @@ const usersSlice = createSlice({
     // payload {username,email}
 
     login(state, action) {
-      console.log(action.payload);
       state.loginUser = state.users.filter((element) => {
-      console.log(element.username === action.payload.username,element.email === action.payload.email,action.payload.username,element.username,action.payload.email,element.email);
+        console.log(
+          element.username === action.payload.username,
+          element.email === action.payload.email,
+          action.payload.username,
+          element.username,
+          action.payload.email,
+          element.email
+        );
 
         return (
           element.username === action.payload.username &&
@@ -24,7 +30,10 @@ const usersSlice = createSlice({
         );
       });
 
-      localStorage.setItem("login", JSON.stringify(state.loginUser));
+      if (action.payload && action.payload.name) {
+        state.loginUser = [action.payload];
+      }
+      localStorage.setItem("login", JSON.stringify(state.loginUser[0]));
     },
     // payload [userId,{username,email,name}]
 

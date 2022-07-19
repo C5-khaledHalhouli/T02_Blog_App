@@ -14,12 +14,8 @@ import { login } from './components/redux/reducer/users/index';
 function App() {
 const dispatch =useDispatch()
   useEffect(()=>{
-    if(localStorage.getItem("login")){
-      let userLogin=JSON.parse((localStorage.getItem("login")))[0]
-      dispatch(login(userLogin))
-    }
-axios.get("https://jsonplaceholder.typicode.com/users").then((result)=>{
-  dispatch(allComments(result.data))
+    axios.get("https://jsonplaceholder.typicode.com/users").then((result)=>{
+      dispatch(allComments(result.data))
 }).catch((err)=>{
   console.log(err);
 })
@@ -31,10 +27,15 @@ axios.get("https://jsonplaceholder.typicode.com/posts").then((result)=>{
 })
 axios.get("https://jsonplaceholder.typicode.com/users").then((result)=>{
   dispatch(allUsers(result.data))
-
+  
 }).catch((err)=>{
   console.log(err);
 })
+if(localStorage.getItem("login")){
+  let userLogin=JSON.parse((localStorage.getItem("login")))
+  console.log(userLogin);
+  dispatch(login(userLogin))
+}
 
   },[])
 
