@@ -93,7 +93,9 @@ const NavBar = () => {
                 {state.loginUser.length!==0 ? (
                   <Navbar.Text>
                     Signed in as: <Link to="/userinfo">{state.loginUser[0].name}</Link>
+                    <p>SignOut</p>
                   </Navbar.Text>
+                
                 ) : (
                   <Navbar.Text onClick={handleShow}>SignIn</Navbar.Text>
                 )}

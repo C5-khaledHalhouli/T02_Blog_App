@@ -10,10 +10,14 @@ import PostsPage from './components/PostsPage';
 import {Routes,Route} from "react-router-dom"
 import UsersPage from './components/UsersPage';
 import UserPage from './components/UserPage';
-
+import { login } from './components/redux/reducer/users/index';
 function App() {
 const dispatch =useDispatch()
   useEffect(()=>{
+    if(localStorage.getItem("login")){
+      let userLogin=JSON.parse((localStorage.getItem("login")))[0]
+      dispatch(login(userLogin))
+    }
 axios.get("https://jsonplaceholder.typicode.com/users").then((result)=>{
   dispatch(allComments(result.data))
 }).catch((err)=>{
