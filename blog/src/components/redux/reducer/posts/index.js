@@ -40,8 +40,18 @@ state.posts=state.posts.filter((element)=>{
           array[index]={...element,...action.payload[1]}
         }
       })
+    },
+    // payload id of writter search
+    searchAction(state,action){
+      const arrayOfSearch=state.posts.filter((element)=>{
+        return element.userId =action.payload
+      })
+      console.log(arrayOfSearch);
+      if(arrayOfSearch.length){
+        state.posts=arrayOfSearch
+      }
     }
   },
 });
-export const { allPosts,addPostsAction,deletePostsAction,editeAction,showPostsAction } = postsSlice.actions;
+export const { allPosts,addPostsAction,deletePostsAction,editeAction,showPostsAction,searchAction } = postsSlice.actions;
 export default postsSlice.reducer;

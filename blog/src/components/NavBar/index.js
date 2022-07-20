@@ -11,16 +11,18 @@ import Modal from "react-bootstrap/Modal";
 import { login } from "../redux/reducer/users";
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
-
+import { searchAction } from "../redux/reducer/posts";
 import "./style.css"
 const NavBar = () => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [search, setSearch]=useState("")
   const state = useSelector((state) => {
     return {
       loginUser: state.users.loginUser,
+      users:state.users.users,
     };
   });
   const handleClose = () => setShow(false);
@@ -32,6 +34,12 @@ const NavBar = () => {
   const signoutClick=()=>{
     dispatch(login([]))
     localStorage.removeItem("login")
+  }
+  const searchClick=()=>{
+    let user=state.users.filter((element)=>{
+      return element.name.toLowerCase().includes(search.toLowerCase())
+    })
+    console.log(user);
   }
 
   return (
@@ -93,13 +101,24 @@ const NavBar = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-start flex-grow-1 pe-3">
-                <Nav.Link>
+                <Nav.Link className="navlist">
                   <Link to={"/"}className="navLink">Posts</Link>
                 </Nav.Link>
-                <Nav.Link>
+                <Nav.Link className="navlist">
                   <Link to={"/users"} className="navLink">Users</Link>
                 </Nav.Link>
-                
+                <Form className="d-flex">
+                  <Form.Control
+                    type="search"
+                    placeholder="Search"
+                    className="me-2"
+                    aria-label="Search"
+                    onChange={(e)=>{
+                      setSearch(e.target.value)
+                    }}
+                  />
+                  <Button variant="outline-success" onClick={searchClick}>Search</Button>
+                </Form>
               </Nav>
               <Navbar.Collapse className="justify-content-end">
                 {state.loginUser.length !== 0 ? (

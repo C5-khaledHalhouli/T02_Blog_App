@@ -18,8 +18,11 @@ text-decoration: none;
 .navTitle{
     font-size: 25px;
 text-decoration: none;
-color: rgba(0,0,0,.55);
+color: #036EE4;
+font-weight: 800;
 
-
+}
+.navlist{
+    padding: 16px 0;
 }
 
