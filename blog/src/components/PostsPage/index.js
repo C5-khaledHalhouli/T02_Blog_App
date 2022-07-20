@@ -15,7 +15,7 @@ import {
 } from "../redux/reducer/posts";
 import Dropdown from "react-bootstrap/Dropdown";
 import { RiAccountCircleFill } from 'react-icons/ri';
-let numPage=1
+
 
 const PostsPage = () => {
   const [postTitle, setPostTitle] = useState("");
@@ -39,7 +39,8 @@ const PostsPage = () => {
       users: state.users.users,
       commentsOfPost: state.comments.commentsOfPost,
       loginUser: state.users.loginUser,
-      showPost:state.posts.showPost
+      showPost:state.posts.showPost,
+      numPage:state.posts.numPage
     };
   });
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -101,8 +102,8 @@ const PostsPage = () => {
     setShow(false);
   };
   const seeMoreClick=()=>{
-    numPage =numPage+1
-    dispatch(showPostsAction(numPage))
+    
+    dispatch(showPostsAction(state.numPage))
   }
 
   return (

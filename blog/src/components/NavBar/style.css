@@ -25,4 +25,10 @@ font-weight: 800;
 .navlist{
     padding: 16px 0;
 }
+.d-flex{
+    margin: 16px 0px;
+}
+.navbar{
+    background-color: white;
+}
 

@@ -11,9 +11,11 @@ import Modal from "react-bootstrap/Modal";
 import { login } from "../redux/reducer/users";
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { searchAction } from "../redux/reducer/posts";
+import { searchAction,showPostsAction } from "../redux/reducer/posts";
+import { useNavigate } from "react-router-dom";
 import "./style.css"
 const NavBar = () => {
+  const navigate =useNavigate()
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
@@ -39,7 +41,8 @@ const NavBar = () => {
     let user=state.users.filter((element)=>{
       return element.name.toLowerCase().includes(search.toLowerCase())
     })
-    console.log(user);
+    dispatch(searchAction(user))
+    navigate("/")
   }
 
   return (
@@ -85,9 +88,9 @@ const NavBar = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Navbar key={"sm"}  expand={"sm"} className="mb-3">
-        <Container fluid>
-          <Nav.Link className="navTitle" href="/">Task Blog</Nav.Link>
+      <Navbar key={"sm"}  expand={"sm"} className="mb-3" sticky="top" className="navbar">
+        <Container fluid sticky="top">
+          <Nav.Link className="navTitle" href="/" onClick={()=>dispatch(showPostsAction(1))}>Task Blog</Nav.Link>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"sm"}`} />
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-${"sm"}`}
@@ -102,7 +105,7 @@ const NavBar = () => {
             <Offcanvas.Body>
               <Nav className="justify-content-start flex-grow-1 pe-3">
                 <Nav.Link className="navlist">
-                  <Link to={"/"}className="navLink">Posts</Link>
+                  <Link to={"/"}className="navLink" onClick={()=>dispatch(showPostsAction(1))}>Posts</Link>
                 </Nav.Link>
                 <Nav.Link className="navlist">
                   <Link to={"/users"} className="navLink">Users</Link>
@@ -110,14 +113,14 @@ const NavBar = () => {
                 <Form className="d-flex">
                   <Form.Control
                     type="search"
-                    placeholder="Search"
+                    placeholder="Search by name"
                     className="me-2"
                     aria-label="Search"
                     onChange={(e)=>{
                       setSearch(e.target.value)
                     }}
                   />
-                  <Button variant="outline-success" onClick={searchClick}>Search</Button>
+                  <Button variant="outline-primary" onClick={searchClick}>Search</Button>
                 </Form>
               </Nav>
               <Navbar.Collapse className="justify-content-end">
