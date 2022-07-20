@@ -3,4 +3,16 @@
     justify-content: center;
     align-items: center;
     height: 90vh;
+    background-color: #f0f2f5;
+
+}
+.cardUser{
+    font-size: 1.5rem;
+}
+.cardTitleUser{
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+.mb-2 {
+font-size: 1.6rem;
 }

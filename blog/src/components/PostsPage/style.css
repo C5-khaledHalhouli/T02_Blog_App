@@ -1,5 +1,6 @@
 .postsPage{
     padding: 5% 20%;
+    background-color: #f0f2f5;
 }
 .cardsPost{
     margin: 5%;
@@ -7,4 +8,34 @@
 .card-header{
     justify-content: space-between;
     display: flex;
+}
+.icone{
+    font-size: 30px;
+}
+
+
+a {
+    color:  rgba(0,0,0);
+    text-decoration: none;
+}
+.AddBtn{
+    margin: 0 5%;
+    width: 90%;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+.seeBtn{
+    width:100%;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+.headerOfMainCard {
+    background-color: #6495ED;
+}
+h5{
+    color:black;
+    font-weight: 700;
+}
+.commentBtn{
+    margin: 0 0 10px;
 }

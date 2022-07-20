@@ -1,3 +1,15 @@
 .usersPage{
-    margin: 5% 5%;
+    padding: 5% 5%;
+    background-color: #f0f2f5;
+    width: 100vw;
+    height: 90vh;
+
+}
+th{
+    border-top: 1px solid black;
+    text-align: center;
+}
+td{
+    text-align: center;
+
 }

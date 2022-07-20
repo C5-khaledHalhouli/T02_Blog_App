@@ -14,6 +14,7 @@ import {
   editeAction,showPostsAction
 } from "../redux/reducer/posts";
 import Dropdown from "react-bootstrap/Dropdown";
+import { RiAccountCircleFill } from 'react-icons/ri';
 let numPage=1
 
 const PostsPage = () => {
@@ -106,10 +107,10 @@ const PostsPage = () => {
 
   return (
     <div className="postsPage">
-      <>
-        <Button variant="primary" onClick={handleShow}>
+        <Button variant="primary" onClick={handleShow} className="AddBtn">
           Add post
         </Button>
+      <>
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
@@ -185,8 +186,8 @@ const PostsPage = () => {
           // console.log("user",user);
           return (
             <Card key={index + "post"} className="cardsPost">
-              <Card.Header as="h5">
-                <h5>{user.name}</h5>{" "}
+              <Card.Header as="h5" className="headerOfMainCard">
+                <h5><span className="icone"><RiAccountCircleFill/></span>{user.name}</h5>{" "}
                 {state.loginUser.length !== 0 &&
                 state.loginUser[0].name === user.name ? (
                   <>
@@ -252,15 +253,13 @@ const PostsPage = () => {
                   onClick={() => {
                     commentClick(element.id);
                   }}
-                >
+                className="commentBtn">
                   Comments
                 </Button>
                 {state.users.length !== 0 &&
                   state.commentsOfPost.map((elementpost, index) => {
                     if (element.id === elementpost.postId) {
-                      let user = state.users.find((elementUsers) => {
-                        return elementUsers.email === elementpost.email;
-                      });
+                      
                       return (
                         <Card key={index + "comment"}>
                           <Card.Header>{elementpost.name}</Card.Header>
@@ -283,7 +282,7 @@ const PostsPage = () => {
             </Card>
           );
         })}
-        <Button variant="secondary" onClick={seeMoreClick}>See more</Button>
+        <Button variant="secondary" onClick={seeMoreClick} className="seeBtn" onScroll={seeMoreClick}>See more</Button>
     </div>
   );
 };

@@ -11,6 +11,7 @@ import Modal from "react-bootstrap/Modal";
 import { login } from "../redux/reducer/users";
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
+
 import "./style.css"
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -76,9 +77,9 @@ const NavBar = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Navbar key={"sm"} bg="light" expand={"sm"} className="mb-3">
+      <Navbar key={"sm"}  expand={"sm"} className="mb-3">
         <Container fluid>
-          <Nav.Link className="navTitle">Task Blog</Nav.Link>
+          <Nav.Link className="navTitle" href="/">Task Blog</Nav.Link>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"sm"}`} />
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-${"sm"}`}

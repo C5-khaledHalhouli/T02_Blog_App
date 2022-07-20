@@ -95,9 +95,9 @@ const [username, setUsername] = useState("")
           </Button>
         </Modal.Footer>
       </Modal>
-      <Card style={{ width: "18rem", height: "25rem" }}>
+      <Card style={{ width: "18rem", height: "25rem" }} className="cardUser">
         <Card.Body>
-          <Card.Title>User Info</Card.Title>
+          <Card.Title className="cardTitleUser">User Info</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">Name</Card.Subtitle>
           <Card.Text>
             {state.loginUser.length && state.loginUser[0].name}
