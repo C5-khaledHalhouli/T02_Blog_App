@@ -141,17 +141,18 @@ const NavBar = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-start flex-grow-1 pe-3">
-                <Nav.Link className="navlist navLink" href={"/"}
-                    
-                    onClick={() => dispatch(showPostsAction(1))}>
+                <Nav.Link className="navlist navLink" href={"#"}
+                    onClick={() => {
+                      navigate("/")
+                      dispatch(showPostsAction(1))}}>
                   
                     Posts
                  
                 </Nav.Link>
-                <Nav.Link className="navlist">
-                  <Link to={"/users"} className="navLink">
+                <Nav.Link className="navlist navLink" onClick={()=>{navigate("/users")}}>
+                  
                     Users
-                  </Link>
+                  
                 </Nav.Link>
                 <Form className="d-flex">
                   <Form.Control

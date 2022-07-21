@@ -33,12 +33,18 @@ if(!localStorage.getItem("posts")){
   dispatch(showPostsAction(1))
 
 }
-axios.get("https://jsonplaceholder.typicode.com/users").then((result)=>{
-  dispatch(allUsers(result.data))
-  
-}).catch((err)=>{
-  console.log(err);
-})
+if(!localStorage.getItem("users")){
+
+  axios.get("https://jsonplaceholder.typicode.com/users").then((result)=>{
+    dispatch(allUsers(result.data))
+    
+  }).catch((err)=>{
+    console.log(err);
+  })
+}else{
+  dispatch(allUsers(JSON.parse(localStorage.getItem("users"))))
+
+}
 if(localStorage.getItem("login")){
   let userLogin=JSON.parse((localStorage.getItem("login")))
   dispatch(login(userLogin))

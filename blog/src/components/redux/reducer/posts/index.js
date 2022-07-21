@@ -17,7 +17,7 @@ const postsSlice = createSlice({
     // payload object {userId,Id,title,body}
     addPostsAction(state, action) {
       state.posts = [action.payload, ...state.posts];
-      state.showPost = state.posts.slice(0, state.numPage * 20);
+      state.showPost = state.posts.slice(0, state.numPage * 10);
       localStorage.setItem("posts", JSON.stringify(state.posts));
     },
     // number counten how many page is open
@@ -28,10 +28,10 @@ const postsSlice = createSlice({
         state.postsOfSearch = [];
       }
       if (state.numPage !== 1 && state.postsOfSearch.length >= 1) {
-        state.showPost = state.postsOfSearch.slice(0, state.numPage * 20);
+        state.showPost = state.postsOfSearch.slice(0, state.numPage * 10);
         state.numPage += 1;
       } else {
-        state.showPost = state.posts.slice(0, state.numPage * 20);
+        state.showPost = state.posts.slice(0, state.numPage * 10);
         state.numPage += 1;
       }
     },
@@ -41,7 +41,7 @@ const postsSlice = createSlice({
       state.posts = state.posts.filter((element) => {
         return element.id !== action.payload;
       });
-      state.showPost = state.posts.slice(0, state.numPage * 20);
+      state.showPost = state.posts.slice(0, state.numPage * 5);
       localStorage.setItem("posts", JSON.stringify(state.posts));
     },
     // payload array [postId,{newTitle,newBody}]
@@ -51,7 +51,7 @@ const postsSlice = createSlice({
           array[index] = { ...element, ...action.payload[1] };
         }
       });
-      state.showPost = state.posts.slice(0, state.numPage * 20);
+      state.showPost = state.posts.slice(0, state.numPage * 5);
       localStorage.setItem("posts", JSON.stringify(state.posts));
     },
     // payload id of writter search
@@ -65,7 +65,7 @@ const postsSlice = createSlice({
       }
       if (state.postsOfSearch.length) {
         state.showPost = state.postsOfSearch;
-        state.showPost = state.showPost.slice(0, 20);
+        state.showPost = state.showPost.slice(0, 10);
         state.numPage = 2;
       }
     },

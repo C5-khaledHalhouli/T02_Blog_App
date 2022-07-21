@@ -10,6 +10,8 @@ const usersSlice = createSlice({
     // payload all users on array
     allUsers(state, action) {
       state.users = [...action.payload];
+      localStorage.setItem("users", JSON.stringify(state.users));
+
     },
     // payload {username,email}
 
@@ -35,6 +37,10 @@ const usersSlice = createSlice({
         }
       });
       state.loginUser[0] = { ...state.loginUser[0], ...action.payload[1] };
+      localStorage.setItem("users", JSON.stringify(state.users));
+      localStorage.setItem("login", JSON.stringify(state.loginUser[0]));
+
+
     },
   },
 });

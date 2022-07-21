@@ -23,7 +23,8 @@ const PostsPage = () => {
   const [postBody, setPostBody] = useState("");
   const [show, setShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
- 
+ const [title, setTitle] = useState("")
+ const [body, setBody] = useState("")
   const [editeShow, setEditeShow] = useState(false);
   const [postId, setPostId] = useState("");
   const handleClose = () => {
@@ -133,6 +134,8 @@ const PostsPage = () => {
                   type="text"
                   autoFocus
                   name="fPostTitle"
+                  
+                  
                   onChange={(e) => {
                     setPostTitle(e.target.value);
                   }}
@@ -150,6 +153,7 @@ const PostsPage = () => {
                 <Form.Control
                   as="textarea"
                   rows={3}
+                  
                   onChange={(e) => {
                     setPostBody(e.target.value);
                   }}
@@ -181,7 +185,7 @@ const PostsPage = () => {
           });
           return (
             <Card key={index + "post"} className="cardsPost">
-              <Card.Header as="h5" className="headerOfMainCard">
+              <Card.Header  className="headerOfMainCard">
                 <h5>
                   <span className="icone">
                     <RiAccountCircleFill />
@@ -232,6 +236,7 @@ const PostsPage = () => {
                         </Dropdown.Item>
                         <Dropdown.Item
                           onClick={() => {
+                            
                             handleShowDelete();
                             setPostId(element.id);
                           }}
