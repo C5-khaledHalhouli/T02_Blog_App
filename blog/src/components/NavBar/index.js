@@ -4,18 +4,17 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { login } from "../redux/reducer/users";
-import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { searchAction, showPostsAction } from "../redux/reducer/posts";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
-import Overlay from 'react-bootstrap/Overlay';
-import Tooltip from 'react-bootstrap/Tooltip';
+import Overlay from "react-bootstrap/Overlay";
+import Tooltip from "react-bootstrap/Tooltip";
 const NavBar = () => {
   const [showOverLays, setShowOverLays] = useState(false);
   const target = useRef(null);
@@ -69,10 +68,10 @@ const NavBar = () => {
     }
     if (!resultArr.length && !user.length) {
       dispatch(searchAction(state.users));
-      setShowOverLays(true)
-      setTimeout(()=>{
-        setShowOverLays(false)
-      },2000)
+      setShowOverLays(true);
+      setTimeout(() => {
+        setShowOverLays(false);
+      }, 2000);
     }
   };
 
@@ -141,18 +140,23 @@ const NavBar = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-start flex-grow-1 pe-3">
-                <Nav.Link className="navlist navLink" href={"#"}
-                    onClick={() => {
-                      navigate("/")
-                      dispatch(showPostsAction(1))}}>
-                  
-                    Posts
-                 
+                <Nav.Link
+                  className="navlist navLink"
+                  href={"#"}
+                  onClick={() => {
+                    navigate("/");
+                    dispatch(showPostsAction(1));
+                  }}
+                >
+                  Posts
                 </Nav.Link>
-                <Nav.Link className="navlist navLink" onClick={()=>{navigate("/users")}}>
-                  
-                    Users
-                  
+                <Nav.Link
+                  className="navlist navLink"
+                  onClick={() => {
+                    navigate("/users");
+                  }}
+                >
+                  Users
                 </Nav.Link>
                 <Form className="d-flex">
                   <Form.Control
@@ -169,17 +173,25 @@ const NavBar = () => {
                       }
                     }}
                   />
-                  <Button variant="outline-primary" onClick={searchClick} ref={target}>
+                  <Button
+                    variant="outline-primary"
+                    onClick={searchClick}
+                    ref={target}
+                  >
                     Search
                   </Button>
                 </Form>
-                <Overlay target={target.current} show={showOverLays} placement="right">
-        {(props) => (
-          <Tooltip id="overlay-example" {...props}>
-            No result of {search}
-          </Tooltip>
-        )}
-      </Overlay>
+                <Overlay
+                  target={target.current}
+                  show={showOverLays}
+                  placement="right"
+                >
+                  {(props) => (
+                    <Tooltip id="overlay-example" {...props}>
+                      No result of {search}
+                    </Tooltip>
+                  )}
+                </Overlay>
               </Nav>
               <Navbar.Collapse className="justify-content-end">
                 {state.loginUser.length !== 0 ? (

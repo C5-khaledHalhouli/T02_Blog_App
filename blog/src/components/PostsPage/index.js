@@ -23,8 +23,7 @@ const PostsPage = () => {
   const [postBody, setPostBody] = useState("");
   const [show, setShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
- const [title, setTitle] = useState("")
- const [body, setBody] = useState("")
+
   const [editeShow, setEditeShow] = useState(false);
   const [postId, setPostId] = useState("");
   const handleClose = () => {
