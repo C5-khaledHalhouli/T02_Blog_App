@@ -69,6 +69,10 @@ const NavBar = () => {
     }
     if (!resultArr.length && !user.length) {
       dispatch(searchAction(state.users));
+      setShowOverLays(true)
+      setTimeout(()=>{
+        setShowOverLays(false)
+      },2000)
     }
   };
 
@@ -137,14 +141,12 @@ const NavBar = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-start flex-grow-1 pe-3">
-                <Nav.Link className="navlist">
-                  <Link
-                    to={"/"}
-                    className="navLink"
-                    onClick={() => dispatch(showPostsAction(1))}
-                  >
+                <Nav.Link className="navlist navLink" href={"/"}
+                    
+                    onClick={() => dispatch(showPostsAction(1))}>
+                  
                     Posts
-                  </Link>
+                 
                 </Nav.Link>
                 <Nav.Link className="navlist">
                   <Link to={"/users"} className="navLink">
@@ -166,10 +168,17 @@ const NavBar = () => {
                       }
                     }}
                   />
-                  <Button variant="outline-primary" onClick={searchClick}>
+                  <Button variant="outline-primary" onClick={searchClick} ref={target}>
                     Search
                   </Button>
                 </Form>
+                <Overlay target={target.current} show={showOverLays} placement="right">
+        {(props) => (
+          <Tooltip id="overlay-example" {...props}>
+            No result of {search}
+          </Tooltip>
+        )}
+      </Overlay>
               </Nav>
               <Navbar.Collapse className="justify-content-end">
                 {state.loginUser.length !== 0 ? (
