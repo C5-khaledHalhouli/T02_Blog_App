@@ -12,23 +12,24 @@ const postsSlice = createSlice({
     // payload all posts on array
     allPosts(state, action) {
       state.posts = [...action.payload];
+      localStorage.setItem("posts", JSON.stringify(state.posts));
     },
     // payload object {userId,Id,title,body}
     addPostsAction(state, action) {
       state.posts = [action.payload, ...state.posts];
       state.showPost = state.posts.slice(0, state.numPage * 20);
+      localStorage.setItem("posts", JSON.stringify(state.posts));
     },
     // number counten how many page is open
     showPostsAction(state, action) {
       state.numPage = action.payload;
-     
-      if (state.numPage == 1) {
+
+      if (state.numPage === 1) {
         state.postsOfSearch = [];
       }
       if (state.numPage !== 1 && state.postsOfSearch.length >= 1) {
         state.showPost = state.postsOfSearch.slice(0, state.numPage * 20);
         state.numPage += 1;
-
       } else {
         state.showPost = state.posts.slice(0, state.numPage * 20);
         state.numPage += 1;
@@ -37,10 +38,11 @@ const postsSlice = createSlice({
     // payload postId
 
     deletePostsAction(state, action) {
-      console.log(action.payload);
       state.posts = state.posts.filter((element) => {
         return element.id !== action.payload;
       });
+      state.showPost = state.posts.slice(0, state.numPage * 20);
+      localStorage.setItem("posts", JSON.stringify(state.posts));
     },
     // payload array [postId,{newTitle,newBody}]
     editeAction(state, action) {
@@ -49,6 +51,8 @@ const postsSlice = createSlice({
           array[index] = { ...element, ...action.payload[1] };
         }
       });
+      state.showPost = state.posts.slice(0, state.numPage * 20);
+      localStorage.setItem("posts", JSON.stringify(state.posts));
     },
     // payload id of writter search
     searchAction(state, action) {
@@ -60,7 +64,6 @@ const postsSlice = createSlice({
         state.postsOfSearch.push(...arrayOfSearch);
       }
       if (state.postsOfSearch.length) {
-        
         state.showPost = state.postsOfSearch;
         state.showPost = state.showPost.slice(0, 20);
         state.numPage = 2;

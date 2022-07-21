@@ -4,27 +4,31 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { login } from "../redux/reducer/users";
 import { Link } from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { searchAction,showPostsAction } from "../redux/reducer/posts";
+import { searchAction, showPostsAction } from "../redux/reducer/posts";
 import { useNavigate } from "react-router-dom";
-import "./style.css"
+import "./style.css";
+import Overlay from 'react-bootstrap/Overlay';
+import Tooltip from 'react-bootstrap/Tooltip';
 const NavBar = () => {
-  const navigate =useNavigate()
+  const [showOverLays, setShowOverLays] = useState(false);
+  const target = useRef(null);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
-  const [search, setSearch]=useState("")
+  const [search, setSearch] = useState("");
   const state = useSelector((state) => {
     return {
       loginUser: state.users.loginUser,
-      users:state.users.users,
+      users: state.users.users,
     };
   });
   const handleClose = () => setShow(false);
@@ -33,17 +37,40 @@ const NavBar = () => {
     dispatch(login({ username: username, email: email }));
     setShow(false);
   };
-  const signoutClick=()=>{
-    dispatch(login([]))
-    localStorage.removeItem("login")
-  }
-  const searchClick=()=>{
-    let user=state.users.filter((element)=>{
-      return element.name.toLowerCase().includes(search.toLowerCase())
-    })
-    dispatch(searchAction(user))
-    navigate("/")
-  }
+  const signoutClick = () => {
+    dispatch(login([]));
+    localStorage.removeItem("login");
+  };
+  const searchClick = () => {
+    let user = state.users.filter((element) => {
+      return element.name.toLowerCase().includes(search.toLowerCase());
+    });
+    dispatch(searchAction(user));
+    navigate("/");
+    const resultArr = [];
+    if (!user.length) {
+      let counter = 0;
+      state.users.forEach((element) => {
+        for (let i = 0; i < search.length; i++) {
+          if (search.toLowerCase()[i] === element.name.toLowerCase()[i]) {
+            counter += 1;
+          } else if (
+            search.toLowerCase()[i] === element.name.toLowerCase()[i + 1]
+          ) {
+            counter += 1;
+          }
+        }
+        if (counter / search.length >= 0.66) {
+          resultArr.push(element);
+        }
+        counter = 0;
+      });
+      dispatch(searchAction(resultArr));
+    }
+    if (!resultArr.length && !user.length) {
+      dispatch(searchAction(state.users));
+    }
+  };
 
   return (
     <>
@@ -88,9 +115,15 @@ const NavBar = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Navbar key={"sm"}  expand={"sm"} className="mb-3" sticky="top" className="navbar">
+      <Navbar key={"sm"} expand={"sm"} className="mb-3 navbar" sticky="top">
         <Container fluid sticky="top">
-          <Nav.Link className="navTitle" href="/" onClick={()=>dispatch(showPostsAction(1))}>Task Blog</Nav.Link>
+          <Nav.Link
+            className="navTitle"
+            href="/"
+            onClick={() => dispatch(showPostsAction(1))}
+          >
+            Task Blog
+          </Nav.Link>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"sm"}`} />
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-${"sm"}`}
@@ -105,10 +138,18 @@ const NavBar = () => {
             <Offcanvas.Body>
               <Nav className="justify-content-start flex-grow-1 pe-3">
                 <Nav.Link className="navlist">
-                  <Link to={"/"}className="navLink" onClick={()=>dispatch(showPostsAction(1))}>Posts</Link>
+                  <Link
+                    to={"/"}
+                    className="navLink"
+                    onClick={() => dispatch(showPostsAction(1))}
+                  >
+                    Posts
+                  </Link>
                 </Nav.Link>
                 <Nav.Link className="navlist">
-                  <Link to={"/users"} className="navLink">Users</Link>
+                  <Link to={"/users"} className="navLink">
+                    Users
+                  </Link>
                 </Nav.Link>
                 <Form className="d-flex">
                   <Form.Control
@@ -116,11 +157,18 @@ const NavBar = () => {
                     placeholder="Search by name"
                     className="me-2"
                     aria-label="Search"
-                    onChange={(e)=>{
-                      setSearch(e.target.value)
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        searchClick();
+                      }
                     }}
                   />
-                  <Button variant="outline-primary" onClick={searchClick}>Search</Button>
+                  <Button variant="outline-primary" onClick={searchClick}>
+                    Search
+                  </Button>
                 </Form>
               </Nav>
               <Navbar.Collapse className="justify-content-end">
@@ -144,7 +192,9 @@ const NavBar = () => {
                     </Nav>
                   </Navbar.Text>
                 ) : (
-                  <Navbar.Text onClick={handleShow} className="link">SignIn</Navbar.Text>
+                  <Navbar.Text onClick={handleShow} className="link">
+                    SignIn
+                  </Navbar.Text>
                 )}
               </Navbar.Collapse>
             </Offcanvas.Body>

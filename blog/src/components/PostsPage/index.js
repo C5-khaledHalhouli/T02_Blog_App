@@ -7,22 +7,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector, useDispatch } from "react-redux/es/exports";
 import "./style.css";
 import axios from "axios";
+
 import { commentsOfPost } from "../redux/reducer/comments";
 import {
   addPostsAction,
   deletePostsAction,
-  editeAction,showPostsAction
+  editeAction,
+  showPostsAction,
 } from "../redux/reducer/posts";
 import Dropdown from "react-bootstrap/Dropdown";
-import { RiAccountCircleFill } from 'react-icons/ri';
-
+import { RiAccountCircleFill } from "react-icons/ri";
 
 const PostsPage = () => {
   const [postTitle, setPostTitle] = useState("");
   const [postBody, setPostBody] = useState("");
   const [show, setShow] = useState(false);
   const [deleteShow, setDeleteShow] = useState(false);
-
+ 
   const [editeShow, setEditeShow] = useState(false);
   const [postId, setPostId] = useState("");
   const handleClose = () => {
@@ -39,8 +40,8 @@ const PostsPage = () => {
       users: state.users.users,
       commentsOfPost: state.comments.commentsOfPost,
       loginUser: state.users.loginUser,
-      showPost:state.posts.showPost,
-      numPage:state.posts.numPage
+      showPost: state.posts.showPost,
+      numPage: state.posts.numPage,
     };
   });
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -87,8 +88,8 @@ const PostsPage = () => {
     setPostBody("");
     setPostTitle("");
   };
-  const deleteClick = (id) => {
-    dispatch(deletePostsAction(id));
+  const deleteClick = () => {
+    dispatch(deletePostsAction(postId));
   };
   const editeClick = () => {
     let editePost = {};
@@ -101,18 +102,16 @@ const PostsPage = () => {
     dispatch(editeAction([postId, editePost]));
     setShow(false);
   };
-  const seeMoreClick=()=>{
-    
-    dispatch(showPostsAction(state.numPage))
-  }
+  const seeMoreClick = () => {
+    dispatch(showPostsAction(state.numPage));
+  };
 
   return (
     <div className="postsPage">
-        <Button variant="primary" onClick={handleShow} className="AddBtn">
-          Add post
-        </Button>
+      <Button variant="primary" onClick={handleShow} className="AddBtn">
+        Add post
+      </Button>
       <>
-
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             {editeShow ? (
@@ -123,9 +122,7 @@ const PostsPage = () => {
           </Modal.Header>
           <Modal.Body>
             <Form
-              onSubmit={(e) => {
-                console.log(e);
-              }}
+              
             >
               <Form.Group
                 className="mb-3"
@@ -146,9 +143,7 @@ const PostsPage = () => {
                 controlId="exampleForm.ControlTextarea1"
               >
                 <Form.Label
-                  onChange={(e) => {
-                    console.log(1);
-                  }}
+                  
                 >
                   Post body
                 </Form.Label>
@@ -184,11 +179,15 @@ const PostsPage = () => {
           let user = state.users.find((elementUsers) => {
             return elementUsers.id === element.userId;
           });
-          // console.log("user",user);
           return (
             <Card key={index + "post"} className="cardsPost">
               <Card.Header as="h5" className="headerOfMainCard">
-                <h5><span className="icone"><RiAccountCircleFill/></span>{user.name}</h5>{" "}
+                <h5>
+                  <span className="icone">
+                    <RiAccountCircleFill />
+                  </span>
+                  {user.name}
+                </h5>{" "}
                 {state.loginUser.length !== 0 &&
                 state.loginUser[0].name === user.name ? (
                   <>
@@ -206,7 +205,8 @@ const PostsPage = () => {
                         <Button
                           variant="primary"
                           onClick={() => {
-                            deleteClick(element.id);
+
+                            deleteClick();
                             handleClose();
                           }}
                         >
@@ -219,9 +219,7 @@ const PostsPage = () => {
                       <Dropdown.Toggle
                         as={CustomToggle}
                         id="dropdown-custom-components"
-                      >
-                        
-                      </Dropdown.Toggle>
+                      ></Dropdown.Toggle>
                       <Dropdown.Menu>
                         <Dropdown.Item
                           onClick={() => {
@@ -235,6 +233,7 @@ const PostsPage = () => {
                         <Dropdown.Item
                           onClick={() => {
                             handleShowDelete();
+                            setPostId(element.id);
                           }}
                         >
                           Delete
@@ -254,13 +253,13 @@ const PostsPage = () => {
                   onClick={() => {
                     commentClick(element.id);
                   }}
-                className="commentBtn">
+                  className="commentBtn"
+                >
                   Comments
                 </Button>
                 {state.users.length !== 0 &&
                   state.commentsOfPost.map((elementpost, index) => {
                     if (element.id === elementpost.postId) {
-                      
                       return (
                         <Card key={index + "comment"}>
                           <Card.Header>{elementpost.name}</Card.Header>
@@ -283,7 +282,9 @@ const PostsPage = () => {
             </Card>
           );
         })}
-        <Button variant="secondary" onClick={seeMoreClick} className="seeBtn" onScroll={seeMoreClick}>See more</Button>
+      <Button variant="secondary" onClick={seeMoreClick} className="seeBtn">
+        See more
+      </Button>
     </div>
   );
 };

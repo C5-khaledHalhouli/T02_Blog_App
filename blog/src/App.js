@@ -19,13 +19,20 @@ const dispatch =useDispatch()
 }).catch((err)=>{
   console.log(err);
 })
-axios.get("https://jsonplaceholder.typicode.com/posts").then((result)=>{
-  dispatch(allPosts(result.data))
+if(!localStorage.getItem("posts")){
+  axios.get("https://jsonplaceholder.typicode.com/posts").then((result)=>{
+    dispatch(allPosts(result.data))
+    dispatch(showPostsAction(1))
+  
+  }).catch((err)=>{
+    console.log(err);
+  })
+
+}else{
+  dispatch(allPosts(JSON.parse(localStorage.getItem("posts"))))
   dispatch(showPostsAction(1))
 
-}).catch((err)=>{
-  console.log(err);
-})
+}
 axios.get("https://jsonplaceholder.typicode.com/users").then((result)=>{
   dispatch(allUsers(result.data))
   
@@ -39,9 +46,9 @@ if(localStorage.getItem("login")){
 
   },[])
 
-
+  
   return (
-    <div className="App">
+    <div className="App" >
       <NavBar/>
       <Routes>
 
